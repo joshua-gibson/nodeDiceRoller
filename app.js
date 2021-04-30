@@ -16,6 +16,16 @@ app.use(
 );
 
 app.use(
+  "/@enable3d/",
+  express.static(path.join(__dirname, "node_modules/@enable3d/ammo-on-nodejs"))
+);
+
+app.use(
+  "/dgb/",
+  express.static(path.join(__dirname, "node_modules/dat.gui/build"))
+);
+
+app.use(
   "/jsm/",
   express.static(path.join(__dirname, "node_modules/three/examples/jsm"))
 );

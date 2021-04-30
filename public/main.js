@@ -1,6 +1,9 @@
 import * as THREE from "/build/three.module.js";
 import { GLTFLoader } from "/loaders/GLTFLoader.js";
 import { OrbitControls } from "/jsm/controls/OrbitControls.js";
+import * as dat from "/dgb/dat.gui.module.js";
+// import * as Ammo from "/@enable3d/ammo/ammo.js";
+// import { Physics, ServerClock } from "/@enable3d";
 
 function handle_load(gltf) {
   const mesh = gltf.scene.children[2];
@@ -11,7 +14,7 @@ function handle_load(gltf) {
 
 function init() {
   var scene = new THREE.Scene();
-  // var gui = new dat.GUI();
+  var gui = new dat.GUI();
 
   var loader = new GLTFLoader();
   loader.load("die-alpha.gltf", handle_load);
@@ -40,10 +43,10 @@ function init() {
   scene.add(directionalLight);
   // scene.add(box);
 
-  // gui.add(directionalLight, "intensity", 0, 10);
-  // gui.add(directionalLight.position, "x", 0, 20);
-  // gui.add(directionalLight.position, "y", 0, 20);
-  // gui.add(directionalLight.position, "z", 0, 20);
+  gui.add(directionalLight, "intensity", 0, 10);
+  gui.add(directionalLight.position, "x", 0, 20);
+  gui.add(directionalLight.position, "y", 0, 20);
+  gui.add(directionalLight.position, "z", 0, 20);
 
   var camera = new THREE.PerspectiveCamera(
     45,
