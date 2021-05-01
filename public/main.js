@@ -1,9 +1,13 @@
-import * as THREE from "/build/three.module.js";
-import { GLTFLoader } from "/loaders/GLTFLoader.js";
-import { OrbitControls } from "/jsm/controls/OrbitControls.js";
-import * as dat from "/dgb/dat.gui.module.js";
-// import * as Ammo from "/@enable3d/ammo/ammo.js";
-// import { Physics, ServerClock } from "/@enable3d";
+import * as THREE from "/nm/three/build/three.module.js";
+import { GLTFLoader } from "/nm/three/examples/jsm/loaders/GLTFLoader.js";
+import { OrbitControls } from "/nm/three/examples/jsm/controls/OrbitControls.js";
+import * as dat from "/nm/dat.gui/build/dat.gui.module.js";
+// import * as Ammo from "/nm/@enable3d/ammo-on-nodejs/ammo/ammo.js";
+import {
+  Project,
+  Scene3D,
+  PhysicsLoader,
+} from "/nm/@enable3d/ammo-physics/dist/bundle.js";
 
 function handle_load(gltf) {
   const mesh = gltf.scene.children[2];
