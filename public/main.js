@@ -1,26 +1,9 @@
-import * as THREE from "/nm/three/build/three.module.js";
-import { GLTFLoader } from "/nm/three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "/nm/three/examples/jsm/controls/OrbitControls.js";
-import * as dat from "/nm/dat.gui/build/dat.gui.module.js";
-// import * as Ammo from "/nm/@enable3d/ammo-on-nodejs/ammo/ammo.js";
-import {
-  Project,
-  Scene3D,
-  PhysicsLoader,
-} from "/nm/@enable3d/ammo-physics/dist/bundle.js";
-
-function handle_load(gltf) {
-  const mesh = gltf.scene.children[2];
-  scene.add(mesh);
-  mesh.position.z = 0;
-  mesh.position.y = 1;
-}
-
 function init() {
   var scene = new THREE.Scene();
   var gui = new dat.GUI();
+  const { AmmoPhysics, PhysicsLoader } = ENABLE3D;
 
-  var loader = new GLTFLoader();
+  var loader = new THREE.GLTFLoader();
   loader.load("die-alpha.gltf", handle_load);
 
   var enableFog = false;
@@ -71,11 +54,18 @@ function init() {
   renderer.setClearColor("rgb(120, 120, 120)");
   document.getElementById("webgl").appendChild(renderer.domElement);
 
-  var controls = new OrbitControls(camera, renderer.domElement);
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
   update(renderer, scene, camera, controls);
 
   return scene;
+}
+
+function handle_load(gltf) {
+  const mesh = gltf.scene.children[2];
+  scene.add(mesh);
+  mesh.position.z = 0;
+  mesh.position.y = 1;
 }
 
 function getBox(w, h, d) {
