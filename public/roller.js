@@ -26,8 +26,8 @@ const init = () => {
     1000
   );
 
-  camera.position.x = 4;
-  camera.position.y = 6;
+  camera.position.x = 40;
+  camera.position.y = 50;
   camera.position.z = 15;
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -56,24 +56,70 @@ const init = () => {
   directionalLight.intensity = 2;
 
   scene.add(directionalLight);
-  gui.add(directionalLight, "intensity", 0, 10);
-  gui.add(directionalLight.position, "x", 0, 20);
-  gui.add(directionalLight.position, "y", 0, 20);
-  gui.add(directionalLight.position, "z", 0, 20);
+  const lightFolder = gui.addFolder("Light");
+  lightFolder.add(directionalLight, "intensity", 0, 10).name("Intensity");
+  lightFolder.add(directionalLight.position, "x", 0, 20).name("Move Back");
+  lightFolder.add(directionalLight.position, "z", 0, 20).name("Move Over");
+  lightFolder.add(directionalLight.position, "y", 0, 20).name("Move Up");
+
+  var dieProperties = {
+    gravity: [0, -15, 0],
+    velocity: [1, 2, 3],
+    angularVelocity: [0.05, 0.2, 0.7],
+    friction: 0.6,
+    strength: 5,
+    spin: 1,
+  };
+  const dieFolder = gui.addFolder("Die Properties");
+  dieFolder.add(dieProperties, "friction", 0, 1).name("Friction");
+  dieFolder.add(dieProperties, "strength", 0, 10).name("Strength");
+  dieFolder.add(dieProperties, "spin", 0, 5).name("Spin");
 
   // add dice
-  new THREE.GLTFLoader().loadAsync("die-alpha.gltf").then((gltf) => {
-    const die = gltf.scene.children[2];
-    die.position.z = -55;
-    die.position.y = 8;
-    scene.add(die);
-    physics.add.existing(die, { shape: "box", width: 2, height: 2, depth: 2 });
-    die.body.setGravity(0, -15, 0);
-    die.body.setVelocity(3, 2, 20);
-    die.body.setAngularVelocity(5, 7, 21);
-    die.body.setBounciness(1);
-    die.body.setFriction(0.6);
-  });
+  const rollDie = () => {
+    new THREE.GLTFLoader().loadAsync("die-alpha.gltf").then((gltf) => {
+      const die = gltf.scene.children[2];
+      die.position.z = -55;
+      die.position.y = 8;
+      scene.add(die);
+      physics.add.existing(die, {
+        shape: "box",
+        width: 2,
+        height: 2,
+        depth: 2,
+      });
+      die.body.setGravity(...dieProperties.gravity);
+      die.body.setVelocity(
+        ...dieProperties.velocity.map((v) => v * dieProperties.strength)
+      );
+      die.body.setAngularVelocity(
+        ...dieProperties.angularVelocity.map(
+          (v) => v * dieProperties.strength * dieProperties.spin
+        )
+      );
+      die.body.setFriction(dieProperties.friction);
+    });
+  };
+
+  const rollDieManual = {
+    rollDie: rollDie,
+  };
+
+  gui.add(rollDieManual, "rollDie").name("Roll Die");
+
+  //randomize
+  const RandomizeRoll = () => {
+    dieProperties.strength = Math.random() * 10;
+    dieProperties.spin = Math.random() * 5;
+    console.log("Strength: ", (dieProperties.strength = Math.random() * 10));
+    console.log("Spin: ", (dieProperties.spin = Math.random() * 10));
+    rollDie();
+  };
+  const rollDieRandom = {
+    rollDie: RandomizeRoll,
+  };
+
+  gui.add(rollDieRandom, "rollDie").name("Roll Random Die");
 
   // clock
   const clock = new THREE.Clock();
