@@ -6,9 +6,6 @@ app.use(express.static(__dirname + "/public"));
 
 app.use("/nm/", express.static(path.join(__dirname, "node_modules")));
 
-app.use(
-  "/lib/",
-  express.static(path.join(__dirname, "node_modules/@enable3d/lib"))
-);
+app.use("/lib/", express.static(path.join(__dirname, "lib")));
 
-app.listen(8080, () => console.log("Visit http://127.0.0.1:8080"));
+app.listen(3000, () => console.log("Visit http://127.0.0.1:3000"));

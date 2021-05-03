@@ -51,7 +51,7 @@ const MainScene = () => {
     physics.add.existing(die, { shape: "box", width: 2, height: 2, depth: 2 });
     die.body.setGravity(0, -15, 0);
     die.body.setVelocity(3, 2, 20);
-    die.body.setAngularVelocity(5, 7, 15);
+    die.body.setAngularVelocity(5, 7, 21);
     die.body.setBounciness(1);
     die.body.setFriction(0.6);
     // die.body.applyForceX(5);
@@ -72,9 +72,10 @@ const MainScene = () => {
       depth: 2,
     });
     die_two.body.setGravity(0, -15, 0);
-    die_two.body.setVelocity(2, 3, 17);
+    die_two.body.setVelocity(2, 3, 20);
     die_two.body.setAngularVelocity(2, 8, 15);
-    die_two.body.setFriction(0.5);
+    die_two.body.setBounciness(1);
+    die_two.body.setFriction(0.7);
   });
 
   // clock
