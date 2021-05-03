@@ -1,7 +1,6 @@
 function init() {
   var scene = new THREE.Scene();
   var gui = new dat.GUI();
-  const { AmmoPhysics, PhysicsLoader } = ENABLE3D;
 
   var loader = new THREE.GLTFLoader();
   loader.load("die-alpha.gltf", handle_load);
@@ -42,9 +41,9 @@ function init() {
     1000
   );
 
-  camera.position.x = 1;
-  camera.position.y = 2;
-  camera.position.z = 5;
+  camera.position.x = 4;
+  camera.position.y = 6;
+  camera.position.z = 15;
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
