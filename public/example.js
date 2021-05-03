@@ -40,7 +40,7 @@ const MainScene = () => {
   // static ground
   physics.add.ground(
     { width: 120, height: 120 },
-    { lambert: { color: "rgb(0,100,0)" } }
+    { lambert: { color: "rgb(0,100,0)", receiveShadow = true } }
   );
 
   new THREE.GLTFLoader().loadAsync("die-alpha.gltf").then((gltf) => {

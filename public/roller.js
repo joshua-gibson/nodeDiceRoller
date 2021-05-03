@@ -46,21 +46,50 @@ const init = () => {
   );
 
   // add light
+  const lightFolder = gui.addFolder("Light");
   const directionalLight = getDirectionalLight(1);
   const sphere = getSphere(0.3);
   directionalLight.add(sphere);
 
-  directionalLight.position.x = 13;
-  directionalLight.position.y = 10;
-  directionalLight.position.z = 10;
+  directionalLight.position.x = -16;
+  directionalLight.position.y = 20;
+  directionalLight.position.z = 19;
   directionalLight.intensity = 2;
 
   scene.add(directionalLight);
-  const lightFolder = gui.addFolder("Light");
+
   lightFolder.add(directionalLight, "intensity", 0, 10).name("Intensity");
-  lightFolder.add(directionalLight.position, "x", 0, 20).name("Move Back");
-  lightFolder.add(directionalLight.position, "z", 0, 20).name("Move Over");
-  lightFolder.add(directionalLight.position, "y", 0, 20).name("Move Up");
+  lightFolder.add(directionalLight.position, "x", -50, 50).name("Move Back");
+  lightFolder.add(directionalLight.position, "z", -50, 50).name("Move Over");
+  lightFolder.add(directionalLight.position, "y", 1, 30).name("Move Up");
+
+  const includeSpotlight = () => {
+    const spotLight = getSpotLight(1);
+    const sphere = getSphere(0.3);
+    spotLight.add(sphere);
+
+    spotLight.position.x = 26;
+    spotLight.position.y = 20;
+    spotLight.position.z = -12;
+    spotLight.intensity = 2;
+
+    scene.add(spotLight);
+    const spotLightFolder = lightFolder.addFolder("SpotLight");
+    spotLightFolder.add(spotLight, "intensity", 0, 10).name("Intensity");
+    spotLightFolder.add(spotLight.position, "x", -50, 50).name("Move Back");
+    spotLightFolder.add(spotLight.position, "z", -50, 50).name("Move Over");
+    spotLightFolder.add(spotLight.position, "y", 1, 30).name("Move Up");
+
+    lightFolder.remove(lightController);
+  };
+
+  const addSpotLight = {
+    includeSpotlight: includeSpotlight,
+  };
+
+  lightController = lightFolder
+    .add(addSpotLight, "includeSpotlight")
+    .name("add SpotLight");
 
   var dieProperties = {
     gravity: [0, -15, 0],
@@ -88,6 +117,7 @@ const init = () => {
         height: 2,
         depth: 2,
       });
+      die.castShadow = true;
       die.body.setGravity(...dieProperties.gravity);
       die.body.setVelocity(
         ...dieProperties.velocity.map((v) => v * dieProperties.strength)
@@ -154,6 +184,16 @@ const getPointLight = (intensity) => {
 const getSpotLight = (intensity) => {
   const light = new THREE.SpotLight(0xffffff, intensity);
   light.castShadow = true;
+
+  var d = 5;
+
+  light.shadow.camera.left = -d;
+  light.shadow.camera.right = d;
+  light.shadow.camera.top = d;
+  light.shadow.camera.bottom = -d;
+
+  light.shadow.camera.near = 1;
+  light.shadow.camera.far = 20;
 
   light.shadow.bias = 0.001;
   light.shadow.mapSize.width = 2048;

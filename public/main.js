@@ -12,7 +12,7 @@ function init() {
   }
 
   var plane = getPlane(30);
-  var directionalLight = getDirectionalLight(1);
+  var directionalLight = getSpotLight(1);
   var sphere = getSphere(0.05);
   var box = getBox(1, 1, 1);
 
@@ -25,6 +25,7 @@ function init() {
   directionalLight.intensity = 2;
 
   scene.add(plane);
+  scene.add(box);
   directionalLight.add(sphere);
   scene.add(directionalLight);
   // scene.add(box);
