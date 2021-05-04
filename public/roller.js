@@ -45,6 +45,13 @@ const init = () => {
     { lambert: { color: "rgb(0,100,0)" } }
   );
 
+  //add aperature
+  const torus = getTorus();
+  scene.add(torus);
+  torus.position.x = 3;
+  torus.position.z = -55;
+  torus.position.y = 8;
+
   // add light
   const lightFolder = gui.addFolder("Light");
   const directionalLight = getDirectionalLight(1);
@@ -91,6 +98,26 @@ const init = () => {
     .add(addSpotLight, "includeSpotlight")
     .name("add SpotLight");
 
+  // add static die
+  const addDie = () => {
+    new THREE.GLTFLoader().loadAsync("die-alpha.gltf").then((gltf) => {
+      const die = gltf.scene.children[2];
+      die.position.x = 0;
+      die.position.z = 0;
+      die.position.y = 1;
+      scene.add(die);
+      physics.add.existing(die, {
+        shape: "box",
+        width: 2,
+        height: 2,
+        depth: 2,
+      });
+      die.castShadow = true;
+    });
+  };
+  addDie();
+
+  // add dice roll
   var dieProperties = {
     gravity: [0, -15, 0],
     velocity: [1, 2, 3],
@@ -104,7 +131,6 @@ const init = () => {
   dieFolder.add(dieProperties, "strength", 0, 10).name("Strength");
   dieFolder.add(dieProperties, "spin", 0, 5).name("Spin");
 
-  // add dice
   const rollDie = () => {
     new THREE.GLTFLoader().loadAsync("die-alpha.gltf").then((gltf) => {
       const die = gltf.scene.children[2];
@@ -213,5 +239,15 @@ const getDirectionalLight = (intensity) => {
 
   return light;
 };
+
+function getTorus() {
+  var geometry = new THREE.TorusGeometry(3, 1, 16, 100);
+  var material = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+  });
+  var mesh = new THREE.Mesh(geometry, material);
+
+  return mesh;
+}
 
 PhysicsLoader("/lib/ammo/kripken", () => init());
